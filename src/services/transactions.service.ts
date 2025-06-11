@@ -6,6 +6,7 @@ import ApiError from "../utils/ApiError";
 import { csvService } from './index';
 import { Transaction, Transactions, TransactionsFailure, TransactionsSuccess } from '../types/transactions';
 import { filterTransactionStatusResponse, saveTransactionStatusResponse } from '../types/response';
+import { client } from '../database/client';
 
   
 const saveTransactions = async (file: Express.Multer.File) : Promise<saveTransactionStatusResponse> => {
@@ -13,9 +14,35 @@ const saveTransactions = async (file: Express.Multer.File) : Promise<saveTransac
     const { transactionsWithHeader } = await csvService.transformFileIntoArray(file)
     const { transactionsFailure, transactionsSuccess } = await filterTransactions(transactionsWithHeader)
 
-    //database save
-    return { transactionsFailure, transactionsSuccess }
 
+    if(transactionsSuccess.length>= 1) {
+
+      for await (let {from, to, amount, isSuspectTransaction} of transactionsSuccess) {
+        await client.successTransactions.create({
+          data: {
+            from,
+            to, 
+            amount,
+            isSuspect: isSuspectTransaction
+          }
+        })
+      }
+    }
+
+    if(transactionsFailure.length>= 1) {
+      for await (let { from, to, amount, reason } of transactionsFailure) {
+        await client.failureTransactions.create({
+          data: {
+            from,
+            to, 
+            amount,
+            reason
+          }
+        })
+      }
+    }
+
+    return { transactionsFailure, transactionsSuccess }
 
   } catch (error) {
     const errorMessage = `Error saving transactions: $${(error as Error).message}`;

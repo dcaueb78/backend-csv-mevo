@@ -1,4 +1,4 @@
-import { Transactions, TransactionsFailure } from "./transactions";
+import { Transactions, TransactionsFailure, TransactionsSuccess } from "./transactions";
 
 export interface TransformFileIntoArrayResponse {
   transactionsWithHeader: Transactions;

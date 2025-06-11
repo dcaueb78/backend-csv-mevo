@@ -50,3 +50,16 @@ Após o processamento do arquivo, a  API deve retornar uma resposta contendo:
 - Eficiência e Preparo para Escalabilidade.
 - Modularidade, Organização e Reutilização de Código.
 - A preocupação com segurança também será considerada um plus na sua solução.
+
+
+
+
+### Configuração banco de dados:
+
+docker pull
+
+docker-compose up -d
+
+docker exec -it backend-test-mevo-db-1 psql -U postgres -c "CREATE DATABASE mevodb ENCODING 'LATIN1' TEMPLATE template0 LC_COLLATE 'C' LC_CTYPE 'C';"
+
+docker exec -it backend-test-mevo-db-1 psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;"
