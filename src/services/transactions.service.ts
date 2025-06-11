@@ -25,7 +25,6 @@ const saveTransactions = async (file: Express.Multer.File) : Promise<saveTransac
       }
     }
 
-    console.log(file)
     if(transactionsFailure.length>= 1) {
       for await (let { from, to, amount, reason } of transactionsFailure) {
         await client.failureTransactions.create({
