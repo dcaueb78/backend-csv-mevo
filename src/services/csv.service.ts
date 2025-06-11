@@ -10,7 +10,6 @@ const transformFileIntoArray = async (file: Express.Multer.File): Promise<Transf
   try {
     
       const buffer = file?.buffer;
-      const filename = file?.filename;
     
       if (!buffer) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid CSV file');

@@ -29,6 +29,7 @@ model FailureTransactions {
   to          BigInt       
   amount      BigInt
   reason      String       
+  filename    String       
 
   @@map("failure-transactions")
 }
