@@ -1,14 +1,10 @@
-import httpStatus from 'http-status';
-
-import { Readable } from "stream";
-import readline from 'node:readline'
-import ApiError from "../utils/ApiError";
 import { csvService } from './index';
 import { Transaction, Transactions, TransactionsFailure, TransactionsSuccess } from '../types/transactions';
 import { filterTransactionStatusResponse, saveTransactionStatusResponse } from '../types/response';
 import { client } from '../database/client';
+import ApiError from '../utils/ApiError';
+import httpStatus from 'http-status';
 
-  
 const saveTransactions = async (file: Express.Multer.File) : Promise<saveTransactionStatusResponse> => {
   try {
     const { transactionsWithHeader } = await csvService.transformFileIntoArray(file)
@@ -43,15 +39,9 @@ const saveTransactions = async (file: Express.Multer.File) : Promise<saveTransac
     }
 
     return { transactionsFailure, transactionsSuccess }
-
+    
   } catch (error) {
-    const errorMessage = `Error saving transactions: $${(error as Error).message}`;
-    throw new Error('')
-    // return ServiceResponse.failure(
-    //   "An error occurred while saving transactions.",
-    //   null,
-    //   httpStatus.INTERNAL_SERVER_ERROR,
-    // );
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'An error occurred while saving transactions.');
   }
 }
 
@@ -89,13 +79,7 @@ const filterTransactions = async (transactionsWithHeader: Transaction[]): Promis
   return { transactionsFailure, transactionsSuccess }
 
   } catch (error) {
-    throw new Error('')
-    // const errorMessage = `Error saving transactions: $${(error as Error).message}`;
-    // return ServiceResponse.failure(
-    //   "An error occurred while saving transactions.",
-    //   null,
-    //   httpStatus.INTERNAL_SERVER_ERROR,
-    // );
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal Server error');
   }
 }
 

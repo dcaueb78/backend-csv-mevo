@@ -4,7 +4,6 @@ export interface TransformFileIntoArrayResponse {
   transactionsWithHeader: Transactions;
 }
 
-
 export interface filterTransactionStatusResponse {
   transactionsSuccess: TransactionsSuccess;
   transactionsFailure: TransactionsFailure;

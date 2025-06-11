@@ -34,15 +34,9 @@ const transformFileIntoArray = async (file: Express.Multer.File): Promise<Transf
 
       return { transactionsWithHeader }
 
-  } catch (error) {
-    throw new Error('')
-    // const errorMessage = `Error saving transactions: $${(error as Error).message}`;
-    // return ServiceResponse.failure(
-    //   "An error occurred while saving transactions.",
-    //   null,
-    //   httpStatus.INTERNAL_SERVER_ERROR,
-    // );
-  }
+    } catch (error) {
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'An error occurred.');
+    }
 }
 
 export default {
