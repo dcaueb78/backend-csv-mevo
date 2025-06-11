@@ -56,10 +56,16 @@ Após o processamento do arquivo, a  API deve retornar uma resposta contendo:
 
 ### Configuração banco de dados:
 
-docker pull
+Utilizando docker para inicializar o banco de dados postgres, siga os seguintes comandos para criar a imagem e o banco de dados:
 
-docker-compose up -d
+- docker pull
 
-docker exec -it backend-test-mevo-db-1 psql -U postgres -c "CREATE DATABASE mevodb ENCODING 'LATIN1' TEMPLATE template0 LC_COLLATE 'C' LC_CTYPE 'C';"
+- docker-compose up -d
 
-docker exec -it backend-test-mevo-db-1 psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;"
+- docker exec -it backend-test-mevo-db-1 psql -U postgres -c "CREATE DATABASE mevodb ENCODING 'LATIN1' TEMPLATE template0 LC_COLLATE 'C' LC_CTYPE 'C';"
+
+- docker exec -it backend-test-mevo-db-1 psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;"
+
+Após o banco de dados ter sido criado, execute o seguinte comando para realizar a migração do prisma no banco de dados criado:
+
+- npx prisma migrate dev
