@@ -11,9 +11,12 @@ class TransactionsController {
 			throw new Error('')
 		}
 		
-await transactionsService.saveTransactions(file);
-
-		res.status(httpStatus.CREATED).send();
+		const { transactionsFailure, transactionsSuccess } = await transactionsService.saveTransactions(file);
+		const resData = {
+			validtransactions: transactionsSuccess.length,
+			invalidTransactions: transactionsFailure
+		}
+		res.status(httpStatus.CREATED).json(resData).send();
 	};
 }
 
